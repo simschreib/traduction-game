@@ -132,7 +132,7 @@ La fonction qui va actualisé les données
 
 	this.update = function(){
 		
-si on gagne
+si on gagne on affiche le bouton rejouer et enlève le bouton vérifier
 
 		if (game.points >= 20){
 
@@ -141,7 +141,7 @@ si on gagne
 			$('.progressBar').width(this.points/20*100+'%');		
 		}
 		
-si on perd 
+si on perd on affiche le bouton rejouer et enlève le bouton vérifier
 
 		else if (game.points <= 0){
 
@@ -242,6 +242,7 @@ Au clic ou en appuyant sur la touche entrée on valide notre réponse
 		}
 	});
 
+Au clic on relance la partie et on enlève le bouton rejouer
 
 	$('.replay').click(function(){
 
@@ -251,5 +252,6 @@ Au clic ou en appuyant sur la touche entrée on valide notre réponse
 	});
 
 Et on lance le jeu
+
 	var game = new game();
 	game.update();
