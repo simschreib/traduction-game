@@ -13,9 +13,9 @@ Points à améliorer :
 	- Empécher l'utilisateur de tricher en utilisant la console.
 	Pour se faire il faudrait récupérer ses données depuis un serveur
 
-	- Améliorer les traductions : certaines sont en plusieurs mots ou trop similaire 
-	par rapport aux français. Solution faire une vérification plus poussé des mots rendus.
-	Problème : augmente le nombre de requètes soumise à l'API
+	- Améliorer les traductions : certaines sont en plusieurs mots ou trop similaires 
+	par rapport aux Français. Solution faire une vérification plus poussée des mots rendus.
+	Problème : augmente le nombre de requètes soumit à l'API
 
 
 
@@ -37,7 +37,7 @@ Contient la liste des mots français :
 
 	this.frWords
 
-juste une fonction pour renvoyer un nombre aléatoire
+Une fonction pour renvoyer un nombre aléatoire
 entre un interval passé en paramètre
 
 	function rand(max, min){
@@ -54,8 +54,8 @@ on initialise les points à 10
 	this.points = 10;
 	
 la fonction qui va nous permettre de récupérer
-la liste de mot français depuis le fichier txt,
-et renvoyer un objets contenant tout les mots
+la liste de mots français depuis le fichier txt,
+et renvoyer un objet contenant tout les mots
 
 	this.getFrWords = function () {
 
@@ -113,9 +113,7 @@ la traduction du mot en anglais via l'api Bing translator
 	}
 
 			
-on déclare la fonction qui nous permettra de récupérer
-un objet contenant le mot en français et sa traduction
-associée	
+on déclare la fonction qui nous permettra de définir le mot français et sa traduction associée	
 
 	this.getRandWords = function (){
 		
@@ -128,7 +126,7 @@ associée
 	}	
 
 
-La fonction qui va actualisé les données
+La fonction qui va actualiser les données
 
 	this.update = function(){
 		
@@ -251,7 +249,7 @@ Au clic on relance la partie et on enlève le bouton rejouer
 		$('.replay').css('display', 'none');
 	});
 
-Et on lance le jeu
+Et on lance le jeu 
 
 	var game = new game();
 	game.update();

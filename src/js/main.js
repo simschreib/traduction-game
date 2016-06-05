@@ -1,9 +1,3 @@
-
-
-
-
-// juste une fonction pour renvoyer un nombre aléatoire
-// entre un interval passé en paramètre
 function rand(max, min){
 
 	return Math.floor(Math.random() * (max - min +1)) + min;
@@ -11,13 +5,8 @@ function rand(max, min){
 
 function game(){
 
-	
-	// on initialise les points à 10
 	this.points = 10;
 	
-	// la fonction qui va nous permettre de récupérer
-	// la liste de mot français depuis le fichier txt,
-	// et renvoyer un objets contenant tout les mots
 	this.getFrWords = function () {
 
 	    var result="";	
@@ -36,8 +25,7 @@ function game(){
 	}
 
 	this.getFrWords();
-	// la fonction qui va nous permettre de récuper
-	// la traduction du mot en anglais via l'api Bing translator
+
 	 this.getEnWord = function() {
 
 	    var result="";
@@ -67,14 +55,9 @@ function game(){
 	      	result = getWords();
 	    });
 
-	   this.en= result.toLowerCase();
-	  
+	   this.en= result.toLowerCase();	  
 	}
 
-			
-	// on déclare la fonction qui nous permettra de récupérer
-	// un objet contenant le mot en français et sa traduction
-	// associée	
 	this.getRandWords = function (){
 		
 		do{
@@ -86,8 +69,7 @@ function game(){
 	}	
 
 	this.update = function(){
-		
-		// si on gagne
+
 		if (game.points >= 20){
 
 			$('.verify').css('display', 'none');
@@ -95,28 +77,24 @@ function game(){
 			$('.progressBar').width(this.points/20*100+'%');		
 		}
 		
-		// si on perd 
-		else if (game.points <= 0){
+
+ 		else if (game.points <= 0){
 
 			$('.verify').css('display', 'none');
 			$('.replay').css('display', 'inline-block');
 			$('.progressBar').width(this.points/20*100+'%');
 		}
 
-		// si le jeu continu
+
 		else{
 
-			// on selectionne un nouveau mot à traduire avec 
-			// sa traduction
-			word = game.getRandWords();
+			game.getRandWords();
 
 			$('.progressBar').width(game.points/20*100+'%');
 			$('.french').html(this.fr);
 			this.hideWord();
 		}
 
-		// et on efface le contenu de la class answer pour
-		// éviter à l'utilisateur de le faire
 		$('.answer').val('');
 	}
 
@@ -128,9 +106,6 @@ function game(){
 		for (var i = 1; i < this.en.length-1 ; i++) {
 			if(this.en[i]==' '){
 
-			 	// au cas ou la traduction est en deux mots
-			 	// on est sympa et on lui donne la première
-			 	//lettre du second mot
 			 	this.txt = this.txt + ' ' +  this.en[i+1]
 			 	i++;
 			}
@@ -166,13 +141,8 @@ function game(){
 	}
 }
 
-// On vérifie si le mot entré (enter) correspond
-// à la traduction (correction)
-// et on actualise le nombre de points en fonction
-// du résultat
 
 $('.verify').click(function(){
-
 	game.verify();
 	game.update();
 });
@@ -181,7 +151,6 @@ $('.verify').click(function(){
 $(document).keypress(function(e) {
 
     if(e.keyCode === 13) {
-
     	game.verify();
     	game.update();
 	}
