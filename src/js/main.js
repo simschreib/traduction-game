@@ -1,3 +1,6 @@
+
+// la fonction qui va nous permettre de récuper
+// la traduction du mot en anglais via l'api Bing translator
 function getEnWord(word) {
 
     var result="";
@@ -30,7 +33,9 @@ function getEnWord(word) {
    return result;
 }
 
-
+// la fonction qui va nous permettre de récupérer
+// la liste de mot français depuis le fichier txt,
+// et renvoyer un objets contenant tout les mots
 function getFrWords() {
 
     var result="";
@@ -39,41 +44,36 @@ function getFrWords() {
     var promise = $.ajax({
 
 		url: 'src/txt/verbe-2.txt',
-		async: false,
-        
-      
+		async: false,    
    });    
 
     promise.done(
     	function (data){         	
       	result = data;
     });
-	
-	promise.fail(
-    	function (){         	
-      	
-    });
 
-   var tab = result.split("\n");
-   
+   var tab = result.split("\n");   
    return tab;
 }
 
+// juste une fonction pour renvoyer un nombre aléatoire
+// entre un interval passé en paramètre
 function rand(max, min){
 
 	return Math.floor(Math.random() * (max - min +1)) + min;
 }
 
-
 function game(){
 
+	// on récupère tout les mots français
 	this.frWords = getFrWords();
+	// on initialise les points à 10
 	this.point = 10;
-	this.answer ='';
-		
-
 	var frWords = this.frWords;
-		
+	
+	// on déclare la fonction qui nous permettra de récupérer
+	// un objet contenant le mot en français et sa traduction
+	// associée	
 	this.getRandWords = function (){
 		
 		do{
@@ -89,7 +89,7 @@ function game(){
 	
 }
 
-
+// la fonction qui va nous permettre de masquer les lettres
 function hideWord(word){
 	var txt = word[0];
 	for (var i = 1; i < word.length; i++) {
@@ -108,6 +108,10 @@ function hideWord(word){
 	return txt;
 }
 
+// On vérifie si le mot entré (enter) correspond
+// à la traduction (correction)
+// et on actualise le nombre de points en fonction
+// du résultat
 function verify(enter, correction, points){
 
 		if (enter == correction){
@@ -133,7 +137,7 @@ function verify(enter, correction, points){
 
 function update(){
 
-	
+	// si on gagne
 	if (game.points >= 20){
 
 		$('.verify').css('display', 'none');
@@ -141,7 +145,7 @@ function update(){
 		$('.progressBar').width(game.points/20*100+'%');		
 	}
 	
-
+	// si on perd 
 	else if (game.points <= 0){
 
 		$('.verify').css('display', 'none');
@@ -149,16 +153,20 @@ function update(){
 		$('.progressBar').width(game.points/20*100+'%');
 	}
 
+	// si le jeu continu
 	else{
 
-		$('.progressBar').width(game.points/20*100+'%')
+		// on selectionne un nouveau mot à traduire avec 
+		// sa traduction
 		word = game.getRandWords();
 
+		$('.progressBar').width(game.points/20*100+'%');
 		$('.french').html(word.fr);
 		$('.english').html(hideWord(word.en));
-		
-
 	}
+
+	// et on efface le contenu de la class answer pour
+	// éviter à l'utilisateur de le faire
 	$('.answer').val('');
 }
 
@@ -185,7 +193,6 @@ $('.replay').click(function(){
 	update();
 });
 
-/*
+
 var game = new game;
 update();
-*/
