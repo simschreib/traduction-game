@@ -1,6 +1,5 @@
 Pour lancer l'application copier le répertoire et double cliquez sur index.html.
 
-Liste des Fonction : 
 
 function getEnWord(word) : 
 
@@ -19,8 +18,8 @@ function game() :
 
 	le prototype qui va contenir la liste des mots français, le nombre de point
 	et une fonction : 
-		getRandWords qui va nous permettre de nous renvoyer un mot aléatoire français, 
-		parmis les mots stockés, avec sa correspondance en anglais. 
+	getRandWords qui va nous permettre de nous renvoyer un mot aléatoire français, 
+	parmis les mots stockés, avec sa correspondance en anglais. 
 
 function hideWord(word) : 
 
