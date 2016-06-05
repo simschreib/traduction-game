@@ -1,12 +1,15 @@
 
 Installation :
+
 	Copier le répertoire et ajoutez le dans le fichier www de votre serveur
 
 
 Temps estimé de réalisation : 
+
 	6h 6h30
 
 Points à améliorer : 
+
 	- Empécher l'utilisateur de tricher en utilisant la console.
 	Pour se faire il faudrait récupérer ses données depuis un serveur
 
@@ -23,30 +26,37 @@ LE CODE :
 
 
 Contient le mot en anglais : 
+
 	this.en
 
 Contient le mot en français : 
+
 	this.fr
 
 Contient la liste des mots français :
+
 	this.frWords
 
 juste une fonction pour renvoyer un nombre aléatoire
 entre un interval passé en paramètre
+
 	function rand(max, min){
 
 		return Math.floor(Math.random() * (max - min +1)) + min;
 	}
 
 Notre Prototype
+
 	function game(){
 
 on initialise les points à 10
+
 	this.points = 10;
 	
 la fonction qui va nous permettre de récupérer
 la liste de mot français depuis le fichier txt,
 et renvoyer un objets contenant tout les mots
+
 	this.getFrWords = function () {
 
 	    var result="";	
@@ -65,8 +75,10 @@ et renvoyer un objets contenant tout les mots
 	}
 
 	this.getFrWords();
+
 la fonction qui va nous permettre de récuper
 la traduction du mot en anglais via l'api Bing translator
+
 	 this.getEnWord = function() {
 
 	    var result="";
@@ -104,6 +116,7 @@ la traduction du mot en anglais via l'api Bing translator
 on déclare la fonction qui nous permettra de récupérer
 un objet contenant le mot en français et sa traduction
 associée	
+
 	this.getRandWords = function (){
 		
 		do{
@@ -116,9 +129,11 @@ associée
 
 
 La fonction qui va actualisé les données
+
 	this.update = function(){
 		
 si on gagne
+
 		if (game.points >= 20){
 
 			$('.verify').css('display', 'none');
@@ -127,6 +142,7 @@ si on gagne
 		}
 		
 si on perd 
+
 		else if (game.points <= 0){
 
 			$('.verify').css('display', 'none');
@@ -135,6 +151,7 @@ si on perd
 		}
 
 si le jeu continu
+
 		else{
 
 			// on selectionne un nouveau mot à traduire avec 
@@ -148,11 +165,13 @@ si le jeu continu
 
 et on efface le contenu de la class answer pour
 éviter à l'utilisateur de le faire
+
 		$('.answer').val('');
 	}
 
 La fonction qui va remplacer chaque lettre par un '-'
 excepté pour la première lettre de chaque mot
+
 	this.hideWord = function(){
 
 
@@ -175,6 +194,7 @@ excepté pour la première lettre de chaque mot
 	}
 
 La fonction qui va vérifier si on a rentré la bonne réponse
+
 	this.verify = function(){
 
 		var txt = '';
@@ -184,16 +204,19 @@ La fonction qui va vérifier si on a rentré la bonne réponse
 
 Il a trouver donc on rajoute un point à son score
 et on lui met un petit message motivant		
+
 		if ($('.answer').val() == txt){
 			$('.showAnwser').html('Bonne réponse :)');
 			this.points++;
 		}			
-Il mal répondu donc on lui affiche la réponse		
+Il mal répondu donc on lui affiche la réponse	
+
 		else{
 			$('.showAnwser').html('La réponse était : <br> '+this.en);
 			this.points--;
 		}
 Et au bout de 1.5s on supprime ce que l'on a affiché
+
 		setTimeout(function(){
 
 			$('.showAnwser').html('');
