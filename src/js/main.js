@@ -26,7 +26,7 @@ function game(){
 
 	this.getFrWords();
 
-	 this.getEnWord = function() {
+	this.getEnWord = function() {
 
 	    var result="";
 	    var p = {};
@@ -163,6 +163,11 @@ $('.replay').click(function(){
 	game.update();
 	$('.replay').css('display', 'none');
 });
+
+$('.play').click(function(){
+	$('.play').css('display', 'none');
+	$('.container').css('display', 'block');
+})
 
 
 var game = new game();

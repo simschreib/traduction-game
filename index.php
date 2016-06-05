@@ -18,7 +18,10 @@
 </head>
 
 <body>
-	
+	<div class="play">
+		<div class="box">Jouer</div>
+	</div>
+
 	<div class="container">
 		<h1>TRADUCTION</h1>
 		<h3>The Game</h3>
