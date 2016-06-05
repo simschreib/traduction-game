@@ -1,83 +1,232 @@
-Pour lancer l'application copier le répertoire et double cliquez sur index.html.
+
+Installation :
+	Copier le répertoire et ajoutez le dans le fichier www de votre serveur
 
 
-function getEnWord(word) : 
+Temps estimé de réalisation : 
+	6h 6h30
 
-	retourne la traduction du mot demandé
+Points à améliorer : 
+	- Empécher l'utilisateur de tricher en utilisant la console.
+	Pour se faire il faudrait récupérer ses données depuis un serveur
 
-function getFrWords() : 
+	- Améliorer les traductions : certaines sont en plusieurs mots ou trop similaire 
+	par rapport aux français. Solution faire une vérification plus poussé des mots rendus.
+	Problème : augmente le nombre de requètes soumise à l'API
 
-	sélectionne tout les mots listé dans le fichier txt en objet
 
-function rand(max, min) :
 
-	une fonction permettant de renvoyer un entier aléatoire dans un
-	interval donné via les paramètres
 
-function game() : 
+LE CODE : 
 
-	le prototype qui va contenir la liste des mots français, le nombre de point
-	et une fonction : 
-	getRandWords qui va nous permettre de nous renvoyer un mot aléatoire français, 
-	parmis les mots stockés, avec sa correspondance en anglais. 
 
-function hideWord(word) : 
 
-	remplace toutes les lettre du mot anglais sauf la première de chaque mots par : '-'
 
-function verify(enter, correction, points) : 
+Contient le mot en anglais : 
+	this.en
 
-	fonction qui va vérifier si le mot saisi par l'utilisateur (enter) 
-	correspond à la traduction (correction) et actualise le nombre de points.
+Contient le mot en français : 
+	this.fr
 
-function update() : 
+Contient la liste des mots français :
+	this.frWords
 
-	va vérifier l'état de jeu et chargé et on va affecter à la variable globale word 
-	un nouvel objet contenant le mot français et ça traduction. 
-	En cas de victoire ou de perte la fonction affichera le bouton rejouer.
-	La fonction update affiche aussi la réponse en cas d'erreur ou un message 
-	encourageant en cas de bonne réponse
+juste une fonction pour renvoyer un nombre aléatoire
+entre un interval passé en paramètre
+	function rand(max, min){
 
-On écoute les évènement :
+		return Math.floor(Math.random() * (max - min +1)) + min;
+	}
 
-au clic
+Notre Prototype
+	function game(){
+
+on initialise les points à 10
+	this.points = 10;
+	
+la fonction qui va nous permettre de récupérer
+la liste de mot français depuis le fichier txt,
+et renvoyer un objets contenant tout les mots
+	this.getFrWords = function () {
+
+	    var result="";	
+	    var promise = $.ajax({
+
+			url: 'src/txt/verbe-2.txt',
+			async: false,    
+	   });    
+
+	    promise.done(
+	    	function (data){         	
+	      	result = data;
+	    });
+
+	   this.frWords = result.split("\n");   
+	}
+
+	this.getFrWords();
+la fonction qui va nous permettre de récuper
+la traduction du mot en anglais via l'api Bing translator
+	 this.getEnWord = function() {
+
+	    var result="";
+	    var p = {};
+		p.appid = '68D088969D79A8B23AF8585CC83EBA2A05A97651';
+		p.to = 'en';
+		p.from = 'fr';
+		p.text = this.fr ;
+		
+	    var promise = $.ajax({
+
+			url: 'http://api.microsofttranslator.com/V2/Ajax.svc/Translate',
+			data: p,
+	        async: false,
+	        dataType: 'json',
+	      
+	   });    
+
+	    promise.done(
+	    	function (data){         	
+	      	result = data;
+	      	
+	    });
+		
+		promise.fail(
+	    	function (){         	
+	      	result = getWords();
+	    });
+
+	   this.en= result.toLowerCase();
+	  
+	}
+
+			
+on déclare la fonction qui nous permettra de récupérer
+un objet contenant le mot en français et sa traduction
+associée	
+	this.getRandWords = function (){
+		
+		do{
+			
+			this.fr = this.frWords[rand(this.frWords.length,0)];
+			this.getEnWord();
+
+		}while (this.en.length==0 || this.fr==this.en)		
+	}	
+
+
+La fonction qui va actualisé les données
+	this.update = function(){
+		
+si on gagne
+		if (game.points >= 20){
+
+			$('.verify').css('display', 'none');
+			$('.replay').css('display', 'inline-block');
+			$('.progressBar').width(this.points/20*100+'%');		
+		}
+		
+si on perd 
+		else if (game.points <= 0){
+
+			$('.verify').css('display', 'none');
+			$('.replay').css('display', 'inline-block');
+			$('.progressBar').width(this.points/20*100+'%');
+		}
+
+si le jeu continu
+		else{
+
+			// on selectionne un nouveau mot à traduire avec 
+			// sa traduction
+			word = game.getRandWords();
+
+			$('.progressBar').width(game.points/20*100+'%');
+			$('.french').html(this.fr);
+			this.hideWord();
+		}
+
+et on efface le contenu de la class answer pour
+éviter à l'utilisateur de le faire
+		$('.answer').val('');
+	}
+
+La fonction qui va remplacer chaque lettre par un '-'
+excepté pour la première lettre de chaque mot
+	this.hideWord = function(){
+
+
+		this.txt = this.en[0];
+		
+		for (var i = 1; i < this.en.length-1 ; i++) {
+			if(this.en[i]==' '){
+
+			 	// au cas ou la traduction est en deux mots
+			 	// on est sympa et on lui donne la première
+			 	//lettre du second mot
+			 	this.txt = this.txt + ' ' +  this.en[i+1]
+			 	i++;
+			}
+			 		
+			 else
+			 	this.txt = this.txt + '-';
+		}
+		$('.english').html(this.txt)
+	}
+
+La fonction qui va vérifier si on a rentré la bonne réponse
+	this.verify = function(){
+
+		var txt = '';
+		for (var i = 0; i < this.en.length-1; i++) {
+			txt = txt + this.en[i];
+		}
+
+Il a trouver donc on rajoute un point à son score
+et on lui met un petit message motivant		
+		if ($('.answer').val() == txt){
+			$('.showAnwser').html('Bonne réponse :)');
+			this.points++;
+		}			
+Il mal répondu donc on lui affiche la réponse		
+		else{
+			$('.showAnwser').html('La réponse était : <br> '+this.en);
+			this.points--;
+		}
+Et au bout de 1.5s on supprime ce que l'on a affiché
+		setTimeout(function(){
+
+			$('.showAnwser').html('');
+		},1500);
+	}
+}
+
+Au clic ou en appuyant sur la touche entrée on valide notre réponse
 
 	$('.verify').click(function(){
 
-		verify($('.answer').html(), word.en, game.points)
-		update();
+		game.verify();
+		game.update();
 	});
 
-ou en appuyant sur la touche entrée :
 
 	$(document).keypress(function(e) {
 
 	    if(e.keyCode === 13) {
 
-	    	verify($('.answer').html(), word.en, game.points)
-			update();
+	    	game.verify();
+	    	game.update();
 		}
 	});
 
-on vérifie la réponse et on actualise l'état de jeu.
-
-
-pour rejouer on remet les points à 10
-et on actualise, sans oublié de faire disparaitre
-le bonton rejouer
 
 	$('.replay').click(function(){
 
 		game.points=10;
-		update();
+		game.update();
 		$('.replay').css('display', 'none');
 	});
 
-On itinialise le jeu
-
-	var game = new game;
-	update();
-
-
-
-
+Et on lance le jeu
+	var game = new game();
+	game.update();
