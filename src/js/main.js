@@ -191,6 +191,7 @@ $('.replay').click(function(){
 
 	game.points=10;
 	update();
+	$('.replay').css('display', 'none');
 });
 
 

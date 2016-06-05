@@ -70,6 +70,7 @@ le bonton rejouer
 
 		game.points=10;
 		update();
+		$('.replay').css('display', 'none');
 	});
 
 On itinialise le jeu
